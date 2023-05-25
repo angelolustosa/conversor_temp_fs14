@@ -1,52 +1,64 @@
 const resultDiv = document.getElementById('result');
 
-const divC = document.getElementById('divC');
-divC.style.display = "none";
+const btnF = document.getElementById('btnF');
+btnF.style.display = "none";
 
-const divF = document.getElementById('divF');
-
-
-const inputFarenheit = document.getElementById('inputFarenheit').value;
-const inputCelsius = document.getElementById('inputCelsius').value;
-
-
+const btnC = document.getElementById('btnC');
 
 const onChangeSelect = () => {
     let tempSelect = document.getElementById('selectTemp').value
 
     //console.log(tempSelect === 'celsius')
     if(tempSelect === 'celsius') {
-        divC.style.display = "none";
-        divF.style.display = "block";
+        btnC.style.display = "inline";
+        btnF.style.display = "none";
     } else if(tempSelect === 'fahrenheit')  {
-        divF.style.display = "none";
-        divC.style.display = "block";
+        btnF.style.display = "inline";
+        btnC.style.display = "none";
     }
 }
 
 const toCelsius = () => {
-    const inputFarenheit = document.getElementById('inputFarenheit').value;
-    const celsius = (inputFarenheit - 32) * 5 / 9;
+    const celsius = (inputTemp.value - 32) * 5 / 9;
     displayResult(celsius);
 };
 
 const toFarenheit = () => {
-    const inputCelsius = document.getElementById('inputCelsius').value;
-    const farenheit = 1.8 * inputCelsius + 32;
+    
+    //const temp = document.getElementById('inputCelsius').value;
+    const farenheit = 1.8 * inputTemp.value + 32;
     displayResult(farenheit);
 };
 
-const displayResult = (celsius) => {
+const displayResult = (temp) => {
+    //let result = celsius.toFixed(2)
+    let result = temp
+    let tempSelect = document.getElementById('selectTemp').value
+    console.log(tempSelect)
+
     let message = '';
-    if (celsius < 22) {
-        message = `Tá bem fresquim! Só ${celsius} °C`;
-    } else if (celsius >= 22 && celsius <= 28) {
-        message = 'Tá um sereno só o mi!';
-    } else if (celsius > 30 && celsius <= 33) {
-        message = 'Tá queimando o quengo!';
-    } else if (celsius > 33) {
-        message = 'Tá pegando fogo!';
+
+    if(tempSelect === 'celsius') {
+        if (result < 22) {
+            message = `Tá bem fresquim! Só ${formatPtBf(result)} °C`;
+        } else if (result >= 22 && result <= 28) {
+            message = `Tá um sereno só o mi! ${formatPtBf(result)} °C`;
+        } else if (result > 30 && result <= 33) {
+            message = `Tá queimando o quengo! ${formatPtBf(result)} °C`;
+        } else if (result > 33) {
+            message = `Tá pegando fogo! ${formatPtBf(result)} °C`;
+        }
+    } else {
+        message = `A temperatura é ${formatPtBf(result)} F`;
     }
+    
 
     resultDiv.innerHTML = `<p>${message}</p>`;
+};
+
+const formatPtBf = number => number.toLocaleString('pt-br', {style: 'decimal', maximumFractionDigits: 2});
+
+const limpar = () => {
+    inputTemp.value = ''
+    resultDiv.innerHTML = ''
 };
